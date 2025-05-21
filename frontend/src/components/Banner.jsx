@@ -40,17 +40,17 @@ function Banner() {
         {/* Feature Highlights */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
           <div className="bg-white bg-opacity-10 backdrop-blur-lg p-4 rounded-xl text-gray-900 flex flex-col items-center shadow-md">
-            <MessageSquare className="w-8 h-8 mb-2 text-sky-300" />
+            <MessageSquare className="w-8 h-8 mb-2 text-sky-300 animate-pulse" />
             <h3 className="font-bold text-lg">Real-Time Chat</h3>
             <p className="text-sm">Send and receive messages instantly.</p>
           </div>
           <div className="bg-white bg-opacity-10 backdrop-blur-lg p-4 rounded-xl text-gray-900 flex flex-col items-center shadow-md">
-            <Users className="w-8 h-8 mb-2 text-green-300" />
+            <Users className="w-8 h-8 mb-2 text-green-300 animate-pulse" />
             <h3 className="font-bold text-lg">Group Conversations</h3>
             <p className="text-sm">Connect with friends, teams, or communities.</p>
           </div>
           <div className="bg-white bg-opacity-10 backdrop-blur-lg p-4 rounded-xl text-gray-900 flex flex-col items-center shadow-md">
-            <ShieldCheck className="w-8 h-8 mb-2 text-purple-300" />
+            <ShieldCheck className="w-8 h-8 mb-2 text-purple-300 animate-pulse" />
             <h3 className="font-bold text-lg">Secure Messaging</h3>
             <p className="text-sm">End-to-end encryption for privacy.</p>
           </div>

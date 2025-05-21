@@ -7,6 +7,7 @@ import Home from './home/home.jsx'
 import ContactForm from './components/ContactForm.jsx'
 import Loginmodal from './components/Loginmodal.jsx'
 import Registermodal from './components/Registermodal.jsx'
+import Chatapp from './chatapp/Chatapp.jsx'
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
       <Route path="/features" element={<FeatureShowcase/>} />
       <Route path='/about' element={<About/>} />
       <Route path='/contact' element={<ContactForm/>} />
+      <Route path='/Chatapp' element={<Chatapp/>} />
     </Routes>
     <Loginmodal/>
     <Registermodal/>

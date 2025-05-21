@@ -19,7 +19,11 @@ function Navbar() {
         <Link to="/about" className="hover:text-yellow-300 transition-colors">About</Link>
         <Link to="/contact" className="hover:text-yellow-300 transition-colors">Contact</Link>
       </div>
-
+      <button 
+        className="hidden md:block bg-white text-indigo-700 px-4 py-2 rounded-xl font-semibold hover:bg-yellow-300 hover:text-indigo-900 transition-colors cursor-pointer"
+      >
+        <Link to="/chatapp">Chat App</Link>
+      </button>
       <div className='flex gap-2'>
         <button 
         className="hidden md:block bg-white text-indigo-700 px-4 py-2 rounded-xl font-semibold hover:bg-yellow-300 hover:text-indigo-900 transition-colors cursor-pointer"
