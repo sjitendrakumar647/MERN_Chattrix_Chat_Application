@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Chattrix chat app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjitendrakumar647/MERN_Chattrix_Chat_Application.git"
+  },
+  "keywords": [
+    "MERN"
+  ],
+  "author": "Jitendra Kumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sjitendrakumar647/MERN_Chattrix_Chat_Application/issues"
+  },
+  "homepage": "https://github.com/sjitendrakumar647/MERN_Chattrix_Chat_Application#readme",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.0",
+    "nodemon": "^3.1.10"
+  }
+}
