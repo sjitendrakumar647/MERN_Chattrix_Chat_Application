@@ -100,6 +100,15 @@ function Loginmodal() {
               </button>
             </div>
           </form>
+          <p className="text-sm text-center text-gray-900 mt-6">
+            Don't have an account?{" "}
+            <a onClick={() => {document.getElementById('my_modal_2').showModal();
+              document.getElementById("my_modal_1").close()}
+            }
+             className="text-sky-100 hover:underline font-medium cursor-pointer">
+              Register
+            </a>
+          </p>
         </div>
       </dialog>
     </div>

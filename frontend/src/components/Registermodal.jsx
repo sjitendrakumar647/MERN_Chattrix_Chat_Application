@@ -7,6 +7,7 @@ function Registermodal() {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -17,7 +18,7 @@ function Registermodal() {
         email: data.email,
         password: data.password,
     }
-    await axios.post("http://localhost:4001/user/register", userInfo)
+    await axios.post("http://localhost:4001/user/signup", userInfo)
     .then((res)=>{
         console.log(res.data)
         if(res.data){
@@ -42,7 +43,7 @@ function Registermodal() {
     <div>
       <dialog id="my_modal_2" className="modal">
         <div className="modal-box bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-2xl shadow-2xl p-8 w-full max-w-lg animate-slideIn">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          <h2 className="text-3xl font-bold text-center text-white mb-6">
             Create an Account
           </h2>
 
@@ -60,6 +61,21 @@ function Registermodal() {
                 className="input input-bordered w-full bg-sky-50/10 text-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300 rounded-md px-4 py-2"
               />
               {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+            </div>
+
+            {/* mobile */}
+            <div>
+              <label className="block text-white font-semibold mb-1" htmlFor="mobile">
+                Mobile Number
+              </label>
+              <input
+                id="mobile"
+                type="text"
+                placeholder="Enter your mobile number"
+                {...register("mobile", { required: "Mobile number is required" })}
+                className="input input-bordered w-full bg-sky-50/10 text-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300 rounded-md px-4 py-2"
+              />
+              {errors.mobile && <p className="text-red-500 text-sm mt-1">{errors.mobile.message}</p>}
             </div>
 
             {/* Email Field */}
@@ -103,6 +119,23 @@ function Registermodal() {
               />
               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
             </div>
+            {/* confirm password */}
+            <div>
+              <label className="block text-white font-semibold mb-1" htmlFor="confirm_password">
+                Confirm Password
+              </label>
+              <input
+                id="confirm_password"
+                type="password"
+                placeholder="Confirm your password"
+                {...register("confirm_password", {
+                  required: "Confirm Password is required",
+                  validate: (value) =>
+                    value === getValues("password") || "Passwords do not match",
+                })}
+                className="input input-bordered w-full bg-sky-50/10 text-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300 rounded-md px-4 py-2"
+              />
+            </div>
 
             {/* Action Buttons */}
             <div className="flex justify-end gap-3 pt-4">
@@ -124,7 +157,7 @@ function Registermodal() {
 
           <p className="text-sm text-center text-gray-900 mt-6">
             Already have an account?{" "}
-            <a onClick={() => {document.getElementById('my_modal_3').showModal();
+            <a onClick={() => {document.getElementById('my_modal_1').showModal();
               document.getElementById("my_modal_2").close()}
             }
              className="text-sky-100 hover:underline font-medium cursor-pointer">
