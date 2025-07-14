@@ -2,41 +2,45 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-// import { useAuth } from '../context/AuthProvider'; 
+import { useAuth } from '../context/AuthProvider';
 
 function Loginmodal() {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors } 
+  const [authUser, setAuthUser] = useAuth();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
   } = useForm();
-
-  // const [authUser, setAuthUser] = useAuth(); 
 
   const onSubmit = async (data) => {
     const userInfo = {
-      email: data.email,
+      identifier: data.identifier, // can be email or mobile
       password: data.password,
     };
-
-    try {
-      const res = await axios.post("http://localhost:4001/user/login", userInfo);
-      if (res.data) {
-        toast.success("Login successful ✅");
-        setTimeout(() => {
-          localStorage.setItem("users", JSON.stringify(res.data.user));
-          // setAuthUser(res.data.user);
-          document.getElementById("my_modal_1").close(); // ✅ fixed modal ID
-        }, 3000);
-      }
-    } catch (err) {
+    await axios.post("http://localhost:4001/user/login", userInfo,{
+      withCredentials: true,
+    })
+    .then((res)=>{
+        console.log(res.data)
+        if(res.data){
+            toast.success("Login successful ✅");
+            // alert("Login successful");
+            setTimeout(() => {
+              localStorage.setItem("users", JSON.stringify(res.data));
+              document.getElementById("my_modal_1").close();
+              setAuthUser(res.data);
+            }, 3000);
+        }
+        
+    })   
+    .catch ((err) => {
       if (err.response) {
         console.error(err);
         toast.error("Error: " + err.response.data.message);
       } else {
         toast.error("Login failed. Please try again.");
       }
-    }
+    });
   };
 
   return (
@@ -47,25 +51,23 @@ function Loginmodal() {
             Login to Chattrix
           </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Email */}
+            {/* Email or Mobile */}
             <div className="mb-5">
-              <label htmlFor="email" className="block text-sm font-semibold text-white mb-1">
-                Email
+              <label htmlFor="identifier" className="block text-sm font-semibold text-white mb-1">
+                Email or Mobile
               </label>
               <input
-                type="email"
-                // id="email"
+                type="text"
                 className="input input-bordered w-full bg-sky-50/10 text-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300 rounded-md px-4 py-2"
-                placeholder="Enter your email"
-                {...register("email", {
-                  required: "Email is required",
+                placeholder="Enter email or mobile number"
+                {...register("identifier", {
+                  required: "Email or mobile is required",
                   pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: "Invalid email address",
+                    value: /^(\d{10}|\S+@\S+\.\S+)$/,
+                    message: "Enter a valid email or 10-digit mobile number",
                   },
                 })}
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
             </div>
 
             {/* Password */}
@@ -75,12 +77,13 @@ function Loginmodal() {
               </label>
               <input
                 type="password"
-                // id="password"
                 className="input input-bordered w-full bg-sky-50/10 text-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300 rounded-md px-4 py-2"
                 placeholder="Enter your password"
                 {...register("password", { required: "Password is required" })}
               />
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+              )}
             </div>
 
             {/* Buttons */}
@@ -102,10 +105,13 @@ function Loginmodal() {
           </form>
           <p className="text-sm text-center text-gray-900 mt-6">
             Don't have an account?{" "}
-            <a onClick={() => {document.getElementById('my_modal_2').showModal();
-              document.getElementById("my_modal_1").close()}
-            }
-             className="text-sky-100 hover:underline font-medium cursor-pointer">
+            <a
+              onClick={() => {
+                document.getElementById("my_modal_2").showModal();
+                document.getElementById("my_modal_1").close();
+              }}
+              className="text-sky-100 hover:underline font-medium cursor-pointer"
+            >
               Register
             </a>
           </p>

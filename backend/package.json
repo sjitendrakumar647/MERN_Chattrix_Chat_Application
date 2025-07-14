@@ -24,10 +24,14 @@
   "homepage": "https://github.com/sjitendrakumar647/MERN_Chattrix_Chat_Application#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1"
   }
 }

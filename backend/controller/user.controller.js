@@ -6,10 +6,14 @@ export const signup = async (req, res) => {
     try {
         const { name, mobile, email, password, cpassword } = req.body;
 
-        //check user avaliablity exists or not 
-        const user = await User.findOne({ email, mobile });
-        if (user) {
-            return res.status(400).json({ error: "User already exists" });
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+        return res.status(400).json({ message: "Email already exists" });
+        }
+
+        const existingMobile = await User.findOne({ mobile });
+        if (existingMobile) {
+        return res.status(400).json({ message: "Mobile number already exists" });
         }
         //check password match
         if (password!==cpassword) {
@@ -30,8 +34,15 @@ export const signup = async (req, res) => {
         await newUser.save();
 
         if(newUser){
-            createTokenAndSaveCookie(newUser, res);
-            res.status(201).json({ user: newUser, message: "User registered successfully" });
+            createTokenAndSaveCookie(newUser._id, res);
+            res.status(201).json({ message: "User registered successfully", 
+                user: {
+                    _id: newUser._id,
+                    name: newUser.name,
+                    email: newUser.email,
+                    mobile: newUser.mobile
+                },
+             });
             console.log("User registered successfully");
         }
         
@@ -46,12 +57,18 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { mobile, email, password } = req.body;
+        // const { email, password } = req.body;
+        const { identifier, password } = req.body; // identifier can be email or mobile
 
         //check user exists or not
         const user = await User.findOne({
-            $or: [{ email }, { mobile }]
+            $or: [
+                { email: identifier },
+                { mobile: identifier }
+            ]
+            // email
         });
+        
         if (!user) {
             return res.status(400).json({ error: "User not found" });
         }
@@ -62,7 +79,7 @@ export const login = async (req, res) => {
             return res.status(400).json({ error: "Invalid password" });
         }
         createTokenAndSaveCookie(user._id, res);
-        res.status(200).json({ user, message: "User logged in successfully", user:{
+        res.status(200).json({message: "User logged in successfully", user:{
             _id: user._id,
             name: user.name,
             email: user.email,
@@ -83,6 +100,21 @@ export const logout = async (req, res) => {
         res.clearCookie("jwt");
         res.status(200).json({ message: "User logged out successfully" });
         console.log("User logged out successfully");
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+//show all users
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const loggedInUser = req.user._id;
+        const filterusers = await User.find({
+            _id: { $ne: loggedInUser }  // Exclude the logged in user from the list
+        }).select("-password");
+        res.status(201).json(filterusers);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Server error" });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import Profilesection from './Profilesection';
+import Logout from '../chatapp/Logout';
 
 function ChatNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,13 +22,7 @@ function ChatNavbar() {
         </div>
 
         <div className="flex gap-2">
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded-xl font-semibold hover:bg-yellow-300 hover:text-indigo-900 transition-colors"
-            
-          >
-            <Link to="/">Logout</Link>
-           
-          </button>
+          <Logout/>
         </div>
       </nav>
 

@@ -2,7 +2,11 @@ import axios from 'axios';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { useAuth } from '../context/Authprovider';
+
+
 function Registermodal() {
+  const [authUser, setAuthUser] = useAuth();
   const {
     register,
     handleSubmit,
@@ -10,31 +14,50 @@ function Registermodal() {
     getValues,
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit =async (data) => {
     console.log("Form Data:", data);
     // Perform registration logic here
     const userInfo = {
         name: data.name,
+        mobile: data.mobile,
         email: data.email,
         password: data.password,
+        cpassword: data.cpassword,
     }
-    await axios.post("http://localhost:4001/user/signup", userInfo)
+
+
+    await axios.post("http://localhost:4001/user/signup", userInfo,{
+      withCredentials: true,
+    })
     .then((res)=>{
         console.log(res.data)
         if(res.data){
             toast.success("Successfully registered ✅");
+            // alert("Successfully registered");
             setTimeout(() => {
               document.getElementById("my_modal_2").close();
-              localStorage.setItem("users", JSON.stringify(res.data.user));
+              localStorage.setItem("users", JSON.stringify(res.data));
+              setAuthUser(res.data);
             }, 3000);
         }
         
     })
     .catch((err)=>{
-        if(err.response){
-            console.log(err)
-            toast.error("Error:" + err.response.data.message);
+      
+      if (err.response) {
+        console.log(err);
+        const message = err.response.data.message;
+
+        if (message === "Email already exists") {
+          toast.error("This email is already registered 📧");
+        } else if (message === "Mobile number already exists") {
+          toast.error("This mobile number is already registered 📱");
+        } else {
+          toast.error("Error: " + message);
         }
+      } else {
+        toast.error("Network error or server is not responding");
+      }
         
     })
   };
@@ -121,20 +144,21 @@ function Registermodal() {
             </div>
             {/* confirm password */}
             <div>
-              <label className="block text-white font-semibold mb-1" htmlFor="confirm_password">
+              <label className="block text-white font-semibold mb-1" htmlFor="cpassword">
                 Confirm Password
               </label>
               <input
-                id="confirm_password"
+                id="cpassword"
                 type="password"
                 placeholder="Confirm your password"
-                {...register("confirm_password", {
+                {...register("cpassword", {
                   required: "Confirm Password is required",
                   validate: (value) =>
                     value === getValues("password") || "Passwords do not match",
                 })}
                 className="input input-bordered w-full bg-sky-50/10 text-white border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-300 rounded-md px-4 py-2"
               />
+              {errors.cpassword && <p className="text-red-500 text-sm mt-1">{errors.cpassword.message}</p>}
             </div>
 
             {/* Action Buttons */}

@@ -14,13 +14,16 @@
     "axios": "^1.9.0",
     "daisyui": "^5.0.35",
     "framer-motion": "^12.12.1",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.511.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.4",
     "react-router-dom": "^7.6.0",
     "react-toastify": "^11.0.5",
-    "tailwindcss": "^4.1.7"
+    "socket.io-client": "^4.8.1",
+    "tailwindcss": "^4.1.7",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
